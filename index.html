@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phylomic | Bulk RNA-seq analysis and reporting</title>
+<meta name="description" content="Publication-ready bulk RNA-seq differential expression reports for research labs. Careful QC, defensible statistics and clear figures, in 5 to 7 business days.">
+<meta property="og:title" content="Phylomic | Bulk RNA-seq analysis and reporting">
+<meta property="og:description" content="Publication-ready differential expression reports for research labs, with QC you can defend in review.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://phylomic.github.io/">
+<meta property="og:site_name" content="Phylomic">
+<meta property="og:image" content="https://phylomic.github.io/assets/fig05_three_models.png">
+<meta property="og:image:alt" content="Estimated treatment effect on two muscle genes under three analysis approaches.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://phylomic.github.io/">
+<meta name="theme-color" content="#123A5B">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #123A5B;
+    --coral: #F2683F;
+    --ink: #1C2A36;
+    --slate: #52606D;
+    --panel: #EEF3F7;
+    --rule: #D5DEE6;
+    --paper: #FFFFFF;
+    --sans: "Outfit", "Helvetica Neue", Arial, sans-serif;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--serif); font-size: 1.125rem; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: lining-nums;
+  }
+  .nowrap { white-space: nowrap; }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: var(--navy); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
+  .measure { max-width: 42rem; }
+
+  h1, h2, h3 { font-family: var(--sans); color: var(--navy); line-height: 1.15; margin: 0; }
+  h1 { font-size: clamp(2.2rem, 4.6vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.6rem, 2.8vw, 2.1rem); font-weight: 600; letter-spacing: -0.01em; margin-bottom: 1rem; }
+  h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.35rem; }
+  h1, h2 { text-wrap: balance; }
+  p, li, figcaption { text-wrap: pretty; }
+  p { margin: 0 0 1rem; }
+
+  /* Header */
+  header.site { border-bottom: 1px solid var(--rule); }
+  header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1rem; padding-bottom: 1rem; }
+  header.site img { width: 190px; }
+  nav.site { display: flex; gap: 1.5rem; font-family: var(--sans); font-size: 1rem; }
+  nav.site a { text-decoration: none; color: var(--ink); }
+  nav.site a:hover { color: var(--navy); text-decoration: underline; }
+  @media (max-width: 720px) { nav.site a:not(:last-child) { display: none; } header.site img { width: 160px; } }
+
+  /* Buttons */
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+  .btn {
+    font-family: var(--sans); font-weight: 600; font-size: 1.02rem; text-decoration: none;
+    padding: 0.8rem 1.3rem; border-radius: 4px; border: 2px solid var(--navy); display: inline-block;
+  }
+  .btn.primary { background: var(--navy); color: #fff; }
+  .btn.primary:hover { background: #0C2A43; }
+  .btn.secondary { color: var(--navy); background: transparent; }
+  .btn.secondary:hover { background: var(--panel); }
+
+  /* Hero: headline beside a real figure */
+  .hero { padding: 4rem 0 3.5rem; }
+  .hero .grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 3rem; align-items: start; }
+  .hero .lede { font-size: 1.25rem; color: var(--slate); margin-top: 1.25rem; max-width: 34rem; }
+  @media (max-width: 900px) { .hero .grid { grid-template-columns: 1fr; gap: 2.25rem; } }
+
+  figure { margin: 0; }
+  .plate { background: var(--panel); padding: 1.1rem; border-radius: 3px; }
+  .plate img { background: #fff; }
+  figcaption { font-size: 0.97rem; line-height: 1.55; color: var(--ink); margin-top: 0.85rem; }
+  figcaption b { font-family: var(--sans); font-weight: 600; color: var(--navy); }
+
+  section { padding: 3.75rem 0; border-top: 1px solid var(--rule); }
+
+  /* Services table */
+  .services { width: 100%; border-collapse: collapse; margin-top: 1.5rem; font-size: 1.05rem; }
+  .services th, .services td { text-align: left; vertical-align: top; padding: 1.1rem 1rem 1.1rem 0; border-bottom: 1px solid var(--rule); }
+  .services thead th { font-family: var(--sans); font-weight: 600; font-size: 0.95rem; color: var(--slate); border-bottom: 2px solid var(--navy); }
+  .services .name { font-family: var(--sans); font-weight: 600; color: var(--navy); font-size: 1.15rem; white-space: nowrap; padding-right: 2rem; }
+  .services td.turn { white-space: nowrap; padding-right: 2rem; }
+  .services td.desc { padding-right: 2.5rem; }
+  .services .price { font-family: var(--sans); font-weight: 700; color: var(--navy); font-size: 1.35rem; white-space: nowrap; }
+  .services .price small { font-weight: 500; font-size: 0.9rem; color: var(--slate); }
+  .table-scroll { overflow-x: auto; }
+  @media (max-width: 640px) {
+    .services thead { display: none; }
+    .services, .services tbody, .services tr, .services td { display: block; width: 100%; }
+    .services tr { border-bottom: 1px solid var(--rule); padding: 1rem 0; }
+    .services td, .services .name, .services td.turn, .services td.desc { border: none; padding: 0.2rem 0; white-space: normal; }
+    .services td[data-label]::before { content: attr(data-label) ": "; font-family: var(--sans); font-weight: 600; color: var(--slate); font-size: 0.9rem; }
+    .services .price { margin-top: 0.4rem; }
+  }
+  .note { border-left: 3px solid var(--coral); padding: 0.2rem 0 0.2rem 1rem; margin-top: 1.75rem; }
+
+  /* Process: a real sequence, so numbered */
+  ol.steps { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; counter-reset: step; }
+  ol.steps li { counter-increment: step; border-top: 2px solid var(--navy); padding-top: 0.9rem; }
+  ol.steps li::before { content: counter(step); font-family: var(--sans); font-weight: 700; color: var(--coral); font-size: 1.1rem; display: block; margin-bottom: 0.3rem; }
+  ol.steps p { font-size: 1rem; color: var(--slate); margin: 0; }
+  @media (max-width: 900px) { ol.steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { ol.steps { grid-template-columns: 1fr; } }
+
+  /* Receive list */
+  ul.receive { padding-left: 1.2rem; margin: 0; }
+  ul.receive li { margin-bottom: 0.45rem; }
+  ul.receive li::marker { color: var(--coral); }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  @media (max-width: 900px) { .two { grid-template-columns: 1fr; gap: 2rem; } }
+
+  /* FAQ */
+  details { border-bottom: 1px solid var(--rule); padding: 1rem 0; }
+  details:first-of-type { border-top: 1px solid var(--rule); }
+  summary { font-family: var(--sans); font-weight: 600; color: var(--navy); font-size: 1.1rem; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-weight: 500; color: var(--coral); font-size: 1.4rem; line-height: 1; margin-top: 0.1rem; }
+  details[open] summary::after { content: "\2212"; }
+  details p { margin: 0.75rem 0 0; color: var(--ink); }
+
+  /* Contact band */
+  .contact { background: var(--navy); color: #fff; border-top: none; }
+  .contact h2 { color: #fff; }
+  .contact p { color: #DCE6EE; }
+  .contact .btn.primary { background: #fff; color: var(--navy); border-color: #fff; }
+  .contact .btn.primary:hover { background: var(--panel); }
+  .contact a:not(.btn) { color: #fff; }
+
+  footer.site { font-family: var(--sans); font-size: 0.92rem; color: var(--slate); padding: 1.75rem 0 2.5rem; }
+  footer.site .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 1.5rem; }
+  footer.site a { color: var(--slate); }
+  footer.site a:hover { color: var(--navy); }
+  footer.site .links { display: flex; gap: 1.5rem; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a href="#top" aria-label="Phylomic home"><img src="assets/phylomic-logo.png" alt="Phylomic, bioinformatics analysis and reporting" width="190" height="73"></a>
+    <nav class="site" aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#sample">Sample report</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="hero">
+    <div class="wrap grid">
+      <div>
+        <h1>RNA-seq analysis you can defend in review.</h1>
+        <p class="lede">Publication-ready differential expression reports for research labs. Careful QC before any biology, honest statistics, and figures ready for your manuscript, in 5 to 7 business days.</p>
+        <div class="actions">
+          <a class="btn primary" href="mailto:phylomicx@gmail.com?subject=RNA-seq%20analysis%20enquiry">Email about your data</a>
+          <a class="btn secondary" href="assets/Phylomic_GSE301216_report.pdf">Read a sample report</a>
+        </div>
+      </div>
+      <figure>
+        <div class="plate">
+          <a href="assets/fig05_three_models.png" aria-label="Open figure at full size"><img src="assets/fig05_three_models.png" alt="Two panels showing the estimated bleomycin effect on the muscle genes Acta1 and Myh1 under three analysis approaches. Unadjusted: about 1-fold, not significant. Sample exclusion: about 0.04-fold, significant. Covariate adjusted: about 0.9-fold, not significant." width="1875" height="852"></a>
+        </div>
+        <figcaption><b>A false result, caught before it reached the report.</b> In a public mouse lung fibrosis dataset, some samples carried traces of muscle tissue. Removing those samples, the most common fix, made muscle genes look 24-fold suppressed by treatment. Modeling the contamination instead showed no effect. This is the kind of check every Phylomic project gets.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="wrap">
+      <h2>Services</h2>
+      <p class="measure">Fixed prices, fixed scope, no hourly billing. You send a count matrix and a sample sheet; you receive a report you can use.</p>
+      <div class="table-scroll">
+        <table class="services">
+          <thead>
+            <tr><th scope="col">Service</th><th scope="col">What's included</th><th scope="col">Turnaround</th><th scope="col">Price</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name">DE Report</td>
+              <td class="desc">One comparison, up to 24 samples. Full QC, DESeq2 differential expression, pathway enrichment, publication-ready figures, results tables and a written interpretation. One revision round.</td>
+              <td class="turn" data-label="Turnaround">5 to 7 business days</td>
+              <td class="price">$750</td>
+            </tr>
+            <tr>
+              <td class="name">Analysis Desk</td>
+              <td class="desc">Standing analysis support for labs that sequence regularly. Up to two DE Reports a month, priority turnaround and a monthly call. <span class="nowrap">Three-month</span> minimum.</td>
+              <td class="turn" data-label="Turnaround">3 to 5 business days</td>
+              <td class="price">$1,200 <small>per month</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="measure" style="margin-top:1rem; font-size:1rem; color:var(--slate);">Additional comparisons are $200 each. Prices in USD.</p>
+      <div class="note measure">
+        <p style="margin:0;"><strong>Founding labs:</strong> the first five DE Reports are $450, in exchange for a short testimonial. <strong>Not sure yet?</strong> If your data is already public on GEO with raw counts, I can reanalyze one comparison free so you can judge the work first.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <h2>How a project works</h2>
+      <ol class="steps">
+        <li><h3>Send your data</h3><p>A count matrix and a sample sheet, plus the comparison you care about. Shared however suits you.</p></li>
+        <li><h3>Design and QC check</h3><p>Before any statistics, I confirm the design, look for batch effects, outliers and sample problems, and flag anything that needs a decision.</p></li>
+        <li><h3>Analysis and report</h3><p>Differential expression, enrichment and interpretation, written for a PI rather than a programmer.</p></li>
+        <li><h3>Review together</h3><p>You read the report and ask questions. One revision round is included.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="sample">
+    <div class="wrap two">
+      <div>
+        <h2>See the full sample report</h2>
+        <p>Every project follows the same standard as this worked example: a reanalysis of a published bleomycin lung fibrosis study (GSE301216, 10 controls vs 14 treated mice).</p>
+        <ul class="receive">
+          <li>An executive summary a PI can read in five minutes</li>
+          <li>QC that explains what was found and how it was handled</li>
+          <li>Results classified by how well they hold up, not just by <span class="nowrap">p-value</span></li>
+          <li>Biological interpretation that checks enrichment labels against the actual genes</li>
+          <li>Methods and versions detailed enough for a reviewer</li>
+          <li>Full results tables and figures as separate files</li>
+        </ul>
+        <div class="actions">
+          <a class="btn primary" href="assets/Phylomic_GSE301216_report.pdf">Open the report (PDF)</a>
+          <a class="btn secondary" href="https://github.com/Phylomic/phylomic-rnaseq-flagship">View the code on GitHub</a>
+        </div>
+      </div>
+      <figure>
+        <div class="plate">
+          <a href="assets/fig09_marker_panels.png" aria-label="Open figure at full size"><img src="assets/fig09_marker_panels.png" alt="Fold changes for cell-type marker genes in bleomycin lungs: fibroblast activation and profibrotic macrophage genes increase strongly, airway cilia and club-cell genes decrease, B-cell markers decrease slightly and Acta2 is unchanged." width="2114" height="1939" loading="lazy"></a>
+        </div>
+        <figcaption><b>Reading the genes, not just the labels.</b> An enrichment tool reported "B cell activation," but B-cell marker genes actually went down. The report says so, and explains what drove the label instead.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap two">
+      <div>
+        <h2>About</h2>
+        <p>I'm Samkit Shah, founder of Phylomic. I trained in genetics at the University of Manitoba and focus on one thing: turning bulk RNA-seq data into analysis a lab can trust and publish.</p>
+        <p>Many labs don't have a dedicated bioinformatician, or would rather their students spent time on experiments than on debugging analysis code. That's the gap Phylomic fills.</p>
+      </div>
+      <div>
+        <h2>What you can count on</h2>
+        <ul class="receive">
+          <li>Reproducible analysis: pinned software versions and code you can rerun</li>
+          <li>Plain statements of uncertainty, never overclaimed results</li>
+          <li>Your data kept confidential under a written service agreement</li>
+          <li>A person who answers your questions about the analysis</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap"><div class="measure">
+      <h2>Questions</h2>
+      <details>
+        <summary>What data do I need to send?</summary>
+        <p>A gene-level count matrix (raw counts, not normalized values) and a sample sheet describing each sample's group and any other relevant factors, such as batch or sex. If you're unsure what you have, send a description and I'll tell you.</p>
+      </details>
+      <details>
+        <summary>What if my data has problems?</summary>
+        <p>Then you'll hear about them before any results are reported, with a clear explanation and a recommendation. Finding problems early is part of the service, not an extra.</p>
+      </details>
+      <details>
+        <summary>Can I use the figures and text in my paper?</summary>
+        <p>Yes. The figures, tables and methods are yours to use in manuscripts, grants and presentations.</p>
+      </details>
+      <details>
+        <summary>How do payment and invoicing work?</summary>
+        <p>You receive an invoice in USD. Projects over $500 are billed 50% upfront, with the balance due within 14 days of delivery. The Analysis Desk is billed monthly in advance.</p>
+      </details>
+      <details>
+        <summary>Do you work with labs outside the US?</summary>
+        <p>Yes. Phylomic is based in India and works with labs internationally, and everything happens by email and shared files.</p>
+      </details>
+    </div></div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap"><div class="measure">
+      <h2>Tell me about your data</h2>
+      <p>Send a short description of your experiment: organism, groups, number of samples and what you want to compare. You'll get a reply with what's possible, a price and a timeline.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:phylomicx@gmail.com?subject=RNA-seq%20analysis%20enquiry">Email phylomicx@gmail.com</a>
+      </div>
+    </div></div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>&copy; 2026 Phylomic. Bioinformatics analysis and reporting.</span>
+    <span class="links"><a href="mailto:phylomicx@gmail.com">phylomicx@gmail.com</a><a href="https://github.com/Phylomic">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
