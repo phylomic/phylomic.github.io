@@ -65,7 +65,7 @@
   nav.site { display: flex; gap: 1.5rem; font-family: var(--sans); font-size: 1rem; }
   nav.site a { text-decoration: none; color: var(--ink); }
   nav.site a:hover { color: var(--navy); text-decoration: underline; }
-  @media (max-width: 720px) { nav.site a:not(:last-child) { display: none; } header.site img { width: 160px; } }
+  @media (max-width: 800px) { nav.site a:not(:last-child) { display: none; } header.site img { width: 160px; } }
 
   /* Buttons */
   .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
@@ -128,6 +128,12 @@
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
   @media (max-width: 900px) { .two { grid-template-columns: 1fr; gap: 2rem; } }
 
+  /* Data security: labelled paragraphs */
+  .policy p { margin: 0 0 1.1rem; }
+  .policy p:last-child { margin-bottom: 0; }
+  .policy strong { font-family: var(--sans); font-weight: 600; color: var(--navy); }
+  .aside-link { margin: 1.25rem 0 0; font-family: var(--sans); font-size: 1rem; }
+
   /* FAQ */
   details { border-bottom: 1px solid var(--rule); padding: 1rem 0; }
   details:first-of-type { border-top: 1px solid var(--rule); }
@@ -161,6 +167,7 @@
       <a href="#services">Services</a>
       <a href="#sample">Sample report</a>
       <a href="#about">About</a>
+      <a href="#data-security">Data security</a>
       <a href="#contact">Contact</a>
     </nav>
   </div>
@@ -216,6 +223,7 @@
       <div class="note measure">
         <p style="margin:0;"><strong>Founding labs:</strong> the first five DE Reports are $450, in exchange for a short testimonial. <strong>Not sure yet?</strong> If your data is already public on GEO with raw counts, I can reanalyze one comparison free so you can judge the work first.</p>
       </div>
+      <p class="aside-link"><a href="#data-security">How your data is handled</a></p>
     </div>
   </section>
 
@@ -270,11 +278,23 @@
         <ul class="receive">
           <li>Reproducible analysis: pinned software versions and code you can rerun</li>
           <li>Plain statements of uncertainty, never overclaimed results</li>
-          <li>Your data kept confidential under a written service agreement</li>
+          <li><a href="#data-security">Your data kept confidential, with an NDA available before you share anything</a></li>
           <li>A person who answers your questions about the analysis</li>
         </ul>
       </div>
     </div>
+  </section>
+
+  <section id="data-security">
+    <div class="wrap"><div class="measure policy">
+      <h2>Data security and confidentiality</h2>
+      <p><strong>Before any data is shared.</strong> A mutual NDA is available on request and can be signed before you send anything. Every project also runs under a written service agreement with confidentiality terms. If your institution requires its own data use agreement or a vendor security questionnaire, I'll complete it.</p>
+      <p><strong>Transfer.</strong> Share data through your institution's own tools (Box, OneDrive, Google Drive, Globus, or your sequencing core's portal). Data is never requested as email attachments, and I will never ask for your account credentials.</p>
+      <p><strong>What I accept.</strong> De-identified data only: count matrices and sample sheets. Please don't send protected health information or anything that identifies a human participant.</p>
+      <p><strong>Storage and processing.</strong> Data is stored encrypted on a secured laptop and in Google Drive, and processed there and with a cloud analysis service used under confidentiality terms. A list of the services involved is available on request.</p>
+      <p><strong>Retention and deletion.</strong> Your raw data is deleted within 30 days of final delivery, or sooner on request, with written confirmation if you want it. Deliverables are kept for 6 months so revisions stay possible, unless you ask for earlier deletion.</p>
+      <p><strong>No reuse.</strong> Your data and results are never used for other projects, marketing or publications. Anything shown publicly as an example comes from public datasets, or from yours only with your written permission.</p>
+    </div></div>
   </section>
 
   <section id="faq">
@@ -298,7 +318,7 @@
       </details>
       <details>
         <summary>Do you work with labs outside the US?</summary>
-        <p>Yes. Phylomic is based in India and works with labs internationally, and everything happens by email and shared files.</p>
+        <p>Yes. Phylomic is based in India and works with labs internationally. Everything happens by email and shared files.</p>
       </details>
     </div></div>
   </section>
